@@ -1,0 +1,6 @@
+#ifndef TOUR_GENERATOR_H_
+#define TOUR_GENERATOR_H_
+
+
+
+#endif // TOUR_GENERATOR_H_
