@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <iterator>
 #include <string>
-#include <sys/_types/_size_t.h>
 #include <vector>
 #include <iostream>
 
@@ -27,15 +26,8 @@ class HashMap
         };
         ~HashMap()
         {
-            for (int i = 0; i < bucketSize; i++)
-            {
-                if (m_buckets[i].size() > 0)
-                    m_buckets[i].clear();
-            }
-            
             delete[] m_buckets;
-        }
-            ; // destructor; deletes all of the items in the hashmap
+        }; // destructor; deletes all of the items in the hashmap
               //
         int size() const { return numItems; }; // return the number of associations in the hashmap
 
@@ -48,16 +40,16 @@ class HashMap
         void insert(const std::string& key, const T& value)
         {
             bool hasAdded = false;
-            size_t h = std::hash<std::string> ()(key);
+            size_t h = std::hash<std::string> ()(key); //hash string
             size_t tempvalue = bucketSize;
-            size_t position = h % tempvalue;
-            if (m_buckets[position].size() == 0)
+            size_t position = h % tempvalue; //figure out position
+            if (m_buckets[position].size() == 0) //if the position doesnt have item, then we insert
             {
                 numItems++;
                 m_buckets[position].push_back(valueHolder(key, value));
                 hasAdded = true;
             }
-            else
+            else //if the bucket has items, then find the item associated and we change the value
             {
                 for (valueHolder temp : m_buckets[position])
                     if (temp.getKey() == key)
@@ -68,14 +60,14 @@ class HashMap
             }
 
             if (!hasAdded)
-            {
+            { //case where there is a bunch of items but none of them have the same key, in which case we add teh item
                 numItems++;
                 m_buckets[position].push_back(valueHolder(key, value));
             }
-            updateCurLoad();
+            updateCurLoad(); //update load
             if (m_curLoad > m_maxLoad)
             {
-                reallocate();
+                reallocate(); //checks if we need to rehash to keep load factor below maxload
             }
         };
 
@@ -86,9 +78,9 @@ class HashMap
         // It returns a reference to the newly created value in the map.
         T& operator[](const std::string& key)
         {
-               T* initRes = find(key);
-               if (initRes != nullptr)
-                   return *initRes;
+               T* result = find(key);
+               if (result != nullptr)
+                   return *result;
                insert(key, T());
                return *find(key);
         }
@@ -138,17 +130,18 @@ class HashMap
 
         void reallocate()
         {
-            size_t newBucketSize = bucketSize * 2;
+            size_t newBucketSize = bucketSize * 2; //create new bucket with double size
             vector<valueHolder>* newBuckets = new vector<valueHolder>[newBucketSize];
 
-            for (size_t i = 0; i < bucketSize; ++i) {
+            for (size_t i = 0; i < bucketSize; ++i) { //inset all items
                 for (const auto& item : m_buckets[i]) {
                     size_t h = std::hash<std::string>()(item.getKey()) % newBucketSize;
                     newBuckets[h].push_back(item);
                 }
             }
 
-            m_buckets = std::move(newBuckets);
+            delete[] m_buckets; //delete original bucket and add new bucket
+            m_buckets = newBuckets;
             bucketSize = newBucketSize;
             updateCurLoad();
         }

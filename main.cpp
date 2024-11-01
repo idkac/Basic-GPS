@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 
-#include "geodb.h"
+#include "geob.h"
 #include "router.h"
 #include "stops.h"
 #include "tourcmd.h"
@@ -37,7 +37,7 @@ void print_tour(vector<TourCommand>& tcs)
             if (direction.empty())
                 direction = tcs[i].get_direction();
             street_distance += tcs[i].get_distance();
-            if (i+1 < tcs.size() && tcs[i+1].get_command_type() == TourCommand::proceed 
+            if (i+1 < tcs.size() && tcs[i+1].get_command_type() == TourCommand::proceed
                 && tcs[i+1].get_street() == tcs[i].get_street() && tcs[i].get_street() != "a path")
             {
                 continue;
@@ -86,3 +86,5 @@ int main(int argc, char *argv[])
     else
         print_tour(tcs);
 }
+
+

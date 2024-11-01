@@ -51,7 +51,7 @@ inline double distance_earth_miles(const GeoPoint &g1, const GeoPoint &g2) {
 }
 
 
-inline ouble angle_of_turn(const GeoPoint &p1, const GeoPoint &p2, const GeoPoint &p3)
+inline double angle_of_turn(const GeoPoint &p1, const GeoPoint &p2, const GeoPoint &p3)
 {
   const double angle1 = atan2(p2.latitude - p1.latitude, p2.longitude - p1.longitude);
   const double angle2 = atan2(p3.latitude - p2.latitude, p3.longitude - p2.longitude);

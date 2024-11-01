@@ -21,10 +21,10 @@ public:
         {
             if (poi_info.empty())
                 break;
-			size_t delim_pos = poi_info.find('|');
-			if (delim_pos == std::string::npos  ||  poi_info.find('|', delim_pos+1) != std::string::npos)
-				return false;
-			poi_data_.push_back({poi_info.substr(0, delim_pos), poi_info.substr(delim_pos+1)});
+            size_t delim_pos = poi_info.find('|');
+            if (delim_pos == std::string::npos  ||  poi_info.find('|', delim_pos+1) != std::string::npos)
+                return false;
+            poi_data_.push_back({poi_info.substr(0, delim_pos), poi_info.substr(delim_pos+1)});
         }
         return true;
     }
